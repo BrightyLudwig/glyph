@@ -34,7 +34,7 @@ export default function App() {
       const features: CodeFeatures = parseCode(code);
 
       // Step 2: 调用 DeepSeek 生成艺术
-      const { svg, statement } = await translateCodeToArt(
+      const { svg, statement, palette } = await translateCodeToArt(
         code,
         features,
         style
@@ -50,6 +50,8 @@ export default function App() {
         styleUsed: style,
         modelUsed: 'deepseek-chat',
         timestamp: Date.now(),
+        paletteName: palette.name,
+        paletteReference: palette.reference,
       };
 
       setResult(glyphResult);
@@ -130,6 +132,8 @@ export default function App() {
               statement={result.statement}
               features={result.features}
               style={result.styleUsed}
+              paletteName={result.paletteName}
+              paletteReference={result.paletteReference}
             />
 
             {/* 导出 */}

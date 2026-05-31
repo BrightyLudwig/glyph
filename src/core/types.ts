@@ -94,6 +94,8 @@ export interface GlyphResult {
   styleUsed: ArtStyle;
   modelUsed: string;
   timestamp: number;
+  paletteName: string;
+  paletteReference: string;
 }
 
 /** 预设艺术风格 */

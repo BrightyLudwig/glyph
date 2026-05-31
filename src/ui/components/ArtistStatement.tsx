@@ -10,9 +10,11 @@ interface Props {
   statement: string;
   features: CodeFeatures;
   style: ArtStyle;
+  paletteName?: string;
+  paletteReference?: string;
 }
 
-export function ArtistStatement({ statement, features, style }: Props) {
+export function ArtistStatement({ statement, features, style, paletteName, paletteReference }: Props) {
   const patternLabels: Record<string, string> = {
     recursion: '递归',
     pipeline: '管道链',
@@ -40,6 +42,14 @@ export function ArtistStatement({ statement, features, style }: Props) {
             <span>·</span>
             <span>由 DeepSeek 创作</span>
           </div>
+          {paletteName && (
+            <div className="mt-2 inline-flex items-center gap-2 px-3 py-1.5 bg-gray-50 rounded-full text-xs text-gray-500">
+              <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: '#1a3a5c' }} />
+              <span>调色板：{paletteName}</span>
+              <span className="text-gray-300">|</span>
+              <span className="text-gray-400">{paletteReference}</span>
+            </div>
+          )}
         </div>
 
         {/* 代码特征卡片 */}
