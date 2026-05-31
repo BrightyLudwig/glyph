@@ -71,21 +71,32 @@ Glyph 将源代码转化为**可以挂上墙的抽象画**。它解析代码的 
 
 ## 🔬 同类项目调研
 
-| 项目 | 亮点 | 差异 |
-|------|------|------|
-| [code2art](https://github.com/philipaconrad/code2art) (F#) | 文本→像素艺术 PNG | 简单映射，无 AST 分析 |
-| [JetBrains Radiant](https://github.com/davtstew/open-radiant) (Elm) | 品牌动画生成器 | 非代码源，面向品牌视觉 |
-| [SHAde](https://github.com/LalwaniPalash/SHAde) (Python) | Git commit hash → 抽象画 | 基于哈希而非代码语义 |
-| [Syntaxesia](https://devpost.com/software/syntaxesia) | 代码→AI生成的后现代艺术 | 重度依赖 AI 生成，缺少确定性映射 |
-| [CodeMorpheus](https://github.com/opendilab/CodeMorpheus) | 一键代码自画像 | AI 驱动，黑盒生成 |
-| [GitAura](https://devpost.com/software/gitaura-iyhuge) | 3D 视听体验 | 偏重"氛围"而非"结构" |
-| [CodeLoom](https://github.com/david-patrick-chuks/codeloom) | 代码→可分享的图像 | AI 评论为主，非视觉转换 |
+调研了 7 个相关开源项目后，我们发现了一个清晰的市场空白：
 
-**我们的独特之处**：
-- ✅ **结构驱动，非 AI 黑盒** — 基于 AST 的确定性映射，每个视觉元素都能追溯到具体的代码结构
-- ✅ **有艺术理论支撑** — 每个映射规则都有艺术史的依据，不是拍脑袋的配色
-- ✅ **多感官输出** — 静态 SVG、动态动画、打印规格一应俱全
-- ✅ **风格即解读** — 不同画风揭示代码的不同美学维度
+```
+   简单映射                            AI 黑盒
+   ────────                           ────────
+   │                                       │
+   │  code2art    sudorandom/art           │  CodeMorpheus
+   │  (字节→像素)  (quine实验)              │  (一键AI自画像)
+   │                                       │  Syntaxesia
+   │              ⬆ GLYPH                 │  (Gemini 生成)
+   │            在这里                     │
+   │                                       │  GitAura
+   │    • AST 结构分析（确定性 + 可解释）    │  (3D AI 场景)
+   │    • 艺术理论支撑的映射规则            │
+   │    • 每个视觉元素可追溯到代码          │
+   └───────────────────────────────────────┘
+```
+
+所有现有项目都落在光谱两端——要么太简单（无语义理解），要么太黑盒（AI 生成，不可控）。**中间地带完全空白。**
+
+> 📄 完整调研报告：[docs/research.md](docs/research.md)
+
+**Glyph 的护城河**：
+- ✅ **确定性 + 可解释** — 基于 AST，同样的代码永远生成同样的画，每个像素都有来历
+- ✅ **有艺术理论支撑** — 映射规则对应具体的艺术流派，不是拍脑袋的配色
+- ✅ **结构驱动，非 AI 幻觉** — 画的是代码本身的结构，不是 AI "觉得"代码长什么样
 
 ---
 
