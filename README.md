@@ -6,9 +6,9 @@
 
 ---
 
-Glyph 将源代码转化为**可以挂上墙的抽象画**。它解析代码的 AST（抽象语法树），提取其中的美学特征——结构、嵌套、流动、留白——然后将它们映射为具有审美意图的视觉作品。
+Glyph 将源代码转化为**可以挂上墙的抽象画**。它解析代码的结构特征，提取美学维度——结构、嵌套、流动、留白——然后由 DeepSeek 大模型作为"艺术翻译官"，将这些特征转化为具有审美意图的 SVG 艺术品。
 
-这不是代码高亮，不是可视化工具。这是一场**让程序员感受到的代码之美，穿透屏幕，被任何人看见**的实验。
+这不是代码高亮，不是可视化工具。**LLM 是代码↔艺术互相转换的桥梁**——DeepSeek 同时理解代码语义和艺术理论，在两者之间建立有意义的映射。
 
 ---
 
@@ -103,7 +103,30 @@ Glyph 将源代码转化为**可以挂上墙的抽象画**。它解析代码的 
 ## 🚀 快速开始
 
 ```bash
-# 即将到来
+# 1. 克隆项目
+git clone https://github.com/BrightyLudwig/glyph.git
+cd glyph
+
+# 2. 安装依赖
+npm install
+
+# 3. 配置 DeepSeek API Key
+cp .env.example .env
+# 编辑 .env，填入你的 DeepSeek API Key（从 https://platform.deepseek.com 获取）
+
+# 4. 启动开发环境
+npm run dev
+
+# 5. 打开浏览器
+# http://localhost:5173
+```
+
+### 生产部署
+
+```bash
+npm run build
+npm start
+# 访问 http://localhost:3001
 ```
 
 ---

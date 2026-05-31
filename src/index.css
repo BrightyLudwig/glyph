@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════
+   Glyph 全局样式
+   ═══════════════════════════════════════════ */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply antialiased;
+    background: #faf8f5;
+    background-image:
+      radial-gradient(ellipse at 20% 50%, rgba(200, 190, 175, 0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(180, 190, 200, 0.06) 0%, transparent 50%);
+  }
+}
+
+/* 画框容器 —— 模拟美术馆展墙 */
+.art-frame {
+  @apply bg-white rounded-lg;
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.04),
+    0 8px 24px rgba(0, 0, 0, 0.06),
+    0 20px 48px rgba(0, 0, 0, 0.04);
+}
+
+/* SVG 容器 —— 画作本身 */
+.art-canvas svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* 代码输入区 */
+.code-input-area {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+}
+
+/* 按钮过渡 */
+.btn-glyph {
+  @apply px-6 py-3 rounded-lg font-medium transition-all duration-300;
+  @apply border border-gray-200 hover:border-gray-400;
+  @apply hover:shadow-md active:scale-[0.98];
+}
+
+.btn-glyph-primary {
+  @apply btn-glyph;
+  @apply bg-gray-900 text-white border-gray-900;
+  @apply hover:bg-gray-800;
+}
+
+/* 加载动画 - "画布上的呼吸" */
+@keyframes breathe {
+  0%, 100% { opacity: 0.4; transform: scale(0.95); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+
+.breathing-dot {
+  animation: breathe 2s ease-in-out infinite;
+}
+
+/* 风格选择器 */
+.style-chip {
+  @apply px-3 py-1.5 rounded-full text-sm border border-gray-200 cursor-pointer;
+  @apply transition-all duration-200;
+  @apply hover:border-gray-400 hover:bg-gray-50;
+}
+
+.style-chip.active {
+  @apply bg-gray-900 text-white border-gray-900;
+}
+
+/* 滚动条 */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d1d1d1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a1a1a1;
+}
