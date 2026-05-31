@@ -3,6 +3,7 @@
 // 代理 DeepSeek API 调用，保护 API Key
 // ============================================================
 
+import 'dotenv/config';
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';

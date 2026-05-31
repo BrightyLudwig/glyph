@@ -11,10 +11,17 @@
     "preview": "vite preview",
     "start": "tsx server.ts"
   },
-  "keywords": ["art", "code", "svg", "generative-art", "deepseek"],
+  "keywords": [
+    "art",
+    "code",
+    "svg",
+    "generative-art",
+    "deepseek"
+  ],
   "license": "MIT",
   "dependencies": {
     "dompurify": "^3.2.0",
+    "dotenv": "^17.4.2",
     "express": "^4.21.0",
     "jsdom": "^25.0.0",
     "openai": "^4.70.0",
