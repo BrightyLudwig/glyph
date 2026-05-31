@@ -1,10 +1,9 @@
 // ============================================================
 // 艺术画布组件
-// 安全渲染 SVG，支持缩放查看细节
+// 使用 <img> + data URL 渲染 SVG — 最可靠的方式
 // ============================================================
 
-import { useState, useRef, useEffect } from 'react';
-import DOMPurify from 'dompurify';
+import { useState, useMemo } from 'react';
 
 interface Props {
   svg: string;
@@ -12,48 +11,47 @@ interface Props {
 
 export function ArtCanvas({ svg }: Props) {
   const [zoomed, setZoomed] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [imgError, setImgError] = useState(false);
 
-  // 使用 DOMPurify 清理 SVG 防止 XSS
-  const cleanSvg = DOMPurify.sanitize(svg, {
-    USE_PROFILES: { svg: true, svgFilters: true },
-    ADD_TAGS: ['use', 'defs', 'linearGradient', 'radialGradient', 'stop', 'filter'],
-    ADD_ATTR: [
-      'viewBox', 'preserveAspectRatio', 'xmlns',
-      'cx', 'cy', 'r', 'rx', 'ry',
-      'x1', 'y1', 'x2', 'y2',
-      'd', 'points', 'transform',
-      'stroke-width', 'stroke-dasharray', 'stroke-linecap',
-      'fill-opacity', 'stroke-opacity', 'opacity',
-      'offset', 'stop-color', 'stop-opacity',
-      'stdDeviation', 'result', 'in', 'in2', 'mode',
-      'filterUnits', 'gradientUnits', 'gradientTransform',
-      'spreadMethod',
-    ],
-  });
+  // 将 SVG 转为 data URL，让浏览器原生渲染
+  const svgDataUrl = useMemo(() => {
+    try {
+      // 确保 SVG 有正确的命名空间声明
+      let svgStr = svg.trim();
+      if (!svgStr.includes('xmlns')) {
+        svgStr = svgStr.replace(
+          /<svg/i,
+          '<svg xmlns="http://www.w3.org/2000/svg"'
+        );
+      }
+      const encoded = encodeURIComponent(svgStr)
+        .replace(/'/g, '%27')
+        .replace(/"/g, '%22');
+      return `data:image/svg+xml;charset=utf-8,${encoded}`;
+    } catch {
+      return '';
+    }
+  }, [svg]);
 
   return (
     <div className="art-frame overflow-hidden">
-      {/* 画框顶部装饰条 */}
+      {/* 顶部工具栏 */}
       <div className="bg-gray-50 border-b border-gray-100 px-4 py-2 flex items-center justify-between">
         <span className="text-xs text-gray-400 font-light tracking-wider uppercase">
           作品预览
         </span>
-        <div className="flex gap-2">
-          <button
-            onClick={() => setZoomed(!zoomed)}
-            className="text-xs px-2 py-1 rounded border border-gray-200
-                       text-gray-500 hover:border-gray-400 hover:text-gray-700
-                       transition-colors"
-          >
-            {zoomed ? '⊟ 适合窗口' : '⊕ 放大查看'}
-          </button>
-        </div>
+        <button
+          onClick={() => setZoomed(!zoomed)}
+          className="text-xs px-2 py-1 rounded border border-gray-200
+                     text-gray-500 hover:border-gray-400 hover:text-gray-700
+                     transition-colors"
+        >
+          {zoomed ? '⊟ 适合窗口' : '⊕ 放大查看'}
+        </button>
       </div>
 
       {/* 画作展示区 */}
       <div
-        ref={containerRef}
         className={`
           art-canvas flex items-center justify-center
           bg-[#faf8f5] p-4 min-h-[400px]
@@ -71,16 +69,29 @@ export function ArtCanvas({ svg }: Props) {
           backgroundPosition: '0 0, 0 10px, 10px -10px, -10px 0px',
         }}
       >
-        <div
-          className={`
-            transition-transform duration-500 ease-out
-            ${zoomed ? 'scale-150' : 'scale-100'}
-          `}
-          style={{
-            maxWidth: zoomed ? 'none' : '100%',
-          }}
-          dangerouslySetInnerHTML={{ __html: cleanSvg }}
-        />
+        {imgError ? (
+          <div className="text-center text-gray-400">
+            <p className="text-lg mb-2">⚠️</p>
+            <p className="text-sm">SVG 渲染失败</p>
+            <p className="text-xs mt-1">请尝试重新生成</p>
+          </div>
+        ) : (
+          <img
+            src={svgDataUrl}
+            alt="代码艺术品"
+            onError={() => setImgError(true)}
+            className={`
+              transition-transform duration-500 ease-out
+              ${zoomed ? 'scale-150' : 'scale-100'}
+            `}
+            style={{
+              maxWidth: zoomed ? 'none' : '100%',
+              height: 'auto',
+              display: 'block',
+              boxShadow: '0 2px 16px rgba(0,0,0,0.08)',
+            }}
+          />
+        )}
       </div>
     </div>
   );
